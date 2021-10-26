@@ -1,0 +1,6 @@
+[book]
+authors = ["IFcoltransG"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Esoteric Python Guide"
