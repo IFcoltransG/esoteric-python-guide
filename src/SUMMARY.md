@@ -4,7 +4,7 @@
 
 - [Whitespace](./whitespace.md)
 - [Truthiness and Falsiness](./truthiness.md)
-- [Short Circuits (Under Construction)]()
+- [Short Circuits](./circuits.md)
 - [Lambdas (Under Construction)]()
 - [Operators and Builtins (Under Construction)]()
 

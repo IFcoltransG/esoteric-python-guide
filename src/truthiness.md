@@ -104,6 +104,6 @@ And here's <code>not (A or B)</code> is <code>(not A) and (not B)</code>:
 
 
 ## Pragmatism
-If you need to select an expression based on a Boolean, indexing `(a,b)[boolean]` is often shorter than an explicit ternary conditional `b if boolean else a`. The problem with the former is that it will always evaluate both `a` and `b`. For example, `(print("a"),print("b"))[boolean]` will always print both `a` and `b`, so should be converted to `print(("a","b")[boolean])`  or `print("ab"[boolean])` to print only one of the two. (Many other situations can be shortened using short-circuiting.)
+If you need to select an expression based on a Boolean, indexing `(a,b)[boolean]` is often shorter than an explicit [ternary conditional](./circuits.md#ternary-conditionals) `b if boolean else a`. The problem with the former is that it will always evaluate both `a` and `b`. For example, `(print("a"),print("b"))[boolean]` will always print both `a` and `b`, so should be converted to `print(("a","b")[boolean])`  or `print("ab"[boolean])` to print only one of the two. (Many other situations can be shortened using short-circuiting.)
 
 If you need to convert a Boolean to lowercase text `"true"`/`"false"`, you can interleave the two strings and use a slice, saving on quote marks. `"ftarlusee"[boolean::2]` takes every second character, starting at either `0` or `1` depending, so will suffice. The trick works for any pair of strings that are the same length, or if there's one extra character for the `False` option.

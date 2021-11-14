@@ -5,5 +5,6 @@ This guide hopes to take you from an intermediate Python programmer to a veritab
 
 1. [Whitespace](./whitespace.md)
 2. [Truthiness and Falsiness](./truthiness.md)
+2. [Short Circuits](./circuits.md)
 
 Hosted from [this repo.](https://github.com/IFcoltransG/esoteric-python-guide) Direct your blame [here](./credits.md).
