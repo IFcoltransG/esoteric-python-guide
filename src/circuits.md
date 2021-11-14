@@ -33,7 +33,7 @@ Hold on, those aren't the operators from the previous page. They're bitwise oper
 ```py
 a or b
 a and b
-
+a != b
 not a
 ```
 That's better. Now then, these Boolean operators are capable of emulating `if` and `else`, because of an optimisation called 'short-circuiting'. (The bitwise operators don't have that power.)
