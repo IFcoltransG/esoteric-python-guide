@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="home.html">Home</a></li><li class="chapter-item expanded "><a href="whitespace.html"><strong aria-hidden="true">1.</strong> Whitespace</a></li><li class="chapter-item expanded "><a href="truthiness.html"><strong aria-hidden="true">2.</strong> Truthiness and Falsiness</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Short Circuits (Under Construction)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Lambdas (Under Construction)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Operators and Builtins (Under Construction)</div></li><li class="chapter-item expanded affix "><a href="credits.html">Credits</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="home.html">Home</a></li><li class="chapter-item expanded "><a href="whitespace.html"><strong aria-hidden="true">1.</strong> Whitespace</a></li><li class="chapter-item expanded "><a href="truthiness.html"><strong aria-hidden="true">2.</strong> Truthiness and Falsiness</a></li><li class="chapter-item expanded "><a href="circuits.html"><strong aria-hidden="true">3.</strong> Short Circuits</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Lambdas (Under Construction)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Operators and Builtins (Under Construction)</div></li><li class="chapter-item expanded affix "><a href="credits.html">Credits</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,6 +146,7 @@
 <ol>
 <li><a href="./whitespace.html">Whitespace</a></li>
 <li><a href="./truthiness.html">Truthiness and Falsiness</a></li>
+<li><a href="./circuits.html">Short Circuits</a></li>
 </ol>
 <p>Hosted from <a href="https://github.com/IFcoltransG/esoteric-python-guide">this repo.</a> Direct your blame <a href="./credits.html">here</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="whitespace"><a class="header" href="#whitespace">Whitespace</a></h1>
@@ -292,8 +293,92 @@ And here's <code>not (A or B)</code> is <code>(not A) and (not B)</code>:
 </table>
 </details>
 <h2 id="pragmatism"><a class="header" href="#pragmatism">Pragmatism</a></h2>
-<p>If you need to select an expression based on a Boolean, indexing <code>(a,b)[boolean]</code> is often shorter than an explicit ternary conditional <code>b if boolean else a</code>. The problem with the former is that it will always evaluate both <code>a</code> and <code>b</code>. For example, <code>(print(&quot;a&quot;),print(&quot;b&quot;))[boolean]</code> will always print both <code>a</code> and <code>b</code>, so should be converted to <code>print((&quot;a&quot;,&quot;b&quot;)[boolean])</code>  or <code>print(&quot;ab&quot;[boolean])</code> to print only one of the two. (Many other situations can be shortened using short-circuiting.)</p>
+<p>If you need to select an expression based on a Boolean, indexing <code>(a,b)[boolean]</code> is often shorter than an explicit <a href="./circuits.html#ternary-conditionals">ternary conditional</a> <code>b if boolean else a</code>. The problem with the former is that it will always evaluate both <code>a</code> and <code>b</code>. For example, <code>(print(&quot;a&quot;),print(&quot;b&quot;))[boolean]</code> will always print both <code>a</code> and <code>b</code>, so should be converted to <code>print((&quot;a&quot;,&quot;b&quot;)[boolean])</code>  or <code>print(&quot;ab&quot;[boolean])</code> to print only one of the two. (Many other situations can be shortened using short-circuiting.)</p>
 <p>If you need to convert a Boolean to lowercase text <code>&quot;true&quot;</code>/<code>&quot;false&quot;</code>, you can interleave the two strings and use a slice, saving on quote marks. <code>&quot;ftarlusee&quot;[boolean::2]</code> takes every second character, starting at either <code>0</code> or <code>1</code> depending, so will suffice. The trick works for any pair of strings that are the same length, or if there's one extra character for the <code>False</code> option.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="short-circuits"><a class="header" href="#short-circuits">Short Circuits</a></h1>
+<blockquote>
+<p>&quot;Oh dear,&quot; says God, &quot;I hadn't thought of that,&quot; and promptly vanishes in a puff of logic.</p>
+</blockquote>
+<p>Programming is sometimes called the art of laziness, but Python has laziness down to a science.</p>
+<h2 id="ternary-conditionals"><a class="header" href="#ternary-conditionals">Ternary conditionals</a></h2>
+<p>Imagine you are a Python coder. Just imagine it. If you <em>are</em> a Python programmer, this won't be particularly difficult. You might be able to imagine yourself coding an <code>if</code> statement.</p>
+<pre><code class="language-py">if condition:
+    x = func()
+else:
+    x = 0
+</code></pre>
+<p>This can be shortened to one line using Python's handy-dandy ternary conditional syntax:</p>
+<pre><code class="language-py">x = func() if condition else 0
+</code></pre>
+<p>The syntax for <code>t if c else f</code> should be mostly self-explanatory, and it's an expression so it can be used in more positions than the traditional <code>if:</code>/<code>else:</code>. (The trade-off is that you can only put expressions in it, rather than full statements, but that is rarely a problem.)</p>
+<pre><code class="language-py">print(f&quot;You're {'quite'if...else'not'} correct!&quot;)
+# prints &quot;You're quite correct!&quot;
+</code></pre>
+<h2 id="and-andor-or"><a class="header" href="#and-andor-or"><code>and</code> and/or <code>or</code></a></h2>
+<p>A little secret: most of the time, ternary conditionals are not necessary. We've <a href="./truthiness.html">seen</a> that Python has Boolean operators.</p>
+<pre><code class="language-py">a | b # a OR b
+a &amp; b # a AND b
+a ^ b # a XOR b
+~a # NOT a
+</code></pre>
+<p>Hold on, those aren't the operators from the previous page. They're bitwise operators, not Boolean. They shouldn't be here right now. Maybe if you ignore them they'll go away.</p>
+<pre><code class="language-py">a or b
+a and b
+
+not a
+</code></pre>
+<p>That's better. Now then, these Boolean operators are capable of emulating <code>if</code> and <code>else</code>, because of an optimisation called 'short-circuiting'. (The bitwise operators don't have that power.)</p>
+<h3 id="short-circuiting"><a class="header" href="#short-circuiting">Short circuiting</a></h3>
+<p>Look at an expression like <code>True or foo()</code>. <code>foo</code> might return <code>True</code> or <code>False</code>, but it doesn't matter which, because <code>True</code> <code>or</code> <em>anything</em> is always truthy. There's really no need to run <code>foo</code>. Python realises this information, and will instantly return <code>True</code> when it sees a <code>True</code> on the left of an <code>or</code>. Similarly, <code>False and foo()</code> is always <code>False</code>, so Python won't bother running <code>foo</code>.</p>
+<p>(If you like, you can confirm this with the <a href="./truthiness.html#booleans">truth table</a>.)</p>
+<p>In fact, <code>a or b</code> is like a shorter version of <code>a if a else b</code>, and <code>a and b</code> is like <code>a if not a else b</code>. (A slight difference: <code>foo() or b</code> calls <code>foo</code> once, while <code>foo() if foo() else b</code> calls it only once.) After staring at that notation, you might be wondering what happens with values that aren't <code>True</code> or <code>False</code>.</p>
+<pre><code class="language-py">1 or 0/0
+# = 1 (doesn't raise `ZeroDivisionError`)
+
+&quot;&quot; and print(&quot;something&quot;)
+# = &quot;&quot; (doesn't print anything)
+
+print(&quot;a&quot;) or &quot;b&quot;
+# = 'b' (prints 'a' as well)
+</code></pre>
+<p>As you can see, it doesn't need to return Booleans.</p>
+<p>That last example has practical merit. The <code>print</code> function, along with many other functions and methods that have side effects, returns <code>None</code>, which is falsy. That allows you to chain operations together: <code>my_list.append(number) or print(my_list) or number</code> is an expression. It evaluates to <code>number</code>, but it also appends <code>number</code> to a list and prints out that list.</p>
+<p>If you know that <code>a()</code> always evaluates to something falsy, you can emulate <code>b() if c else a()</code> using <code>(c or a()) and b()</code>. It may not be any shorter, but it can often suggest other shortenings.</p>
+<p>For instance, let's say you need the result of a function, except some of the time it returns a falsy value (<code>None</code>, <code>0</code>, <code>&quot;&quot;</code> etc), and you need to replace those falsy return values with a default.</p>
+<pre><code class="language-py">line = fizz_or_buzz(n) if fizz_or_buzz(n) != &quot;&quot; else str(n)
+# equivalently:
+line = fizz_or_buzz(n) or str(n)
+</code></pre>
+<h3 id="chained-comparisons"><a class="header" href="#chained-comparisons">Chained comparisons</a></h3>
+<p>Python automatically inserts the Boolean operator <code>and</code> into certain expressions.</p>
+<pre><code class="language-py">if 0 &lt;= a &lt; 10:
+    print(&quot;in range&quot;)
+
+# equivalent to:
+if 0 &lt;= a and a &lt; 10:
+    print(&quot;in range&quot;)
+</code></pre>
+<p>(Oh, alright. They're not quite equivalent, just like how Boolean operators aren't quite the same as ternary conditionals. The middle term is only evaluated once in a chained comparison, so <code>0 &lt;= foo() &lt; 10</code> would call <code>foo</code> once but <code>0 &lt;= foo() and foo() &lt; 10</code> would call it twice.)</p>
+<pre><code class="language-py">print(1 &lt; 10 &lt; 100 &lt; 1000 &lt; 10000)
+# True
+
+print(1 &lt; 2 &gt; 3)
+# False
+
+print(1000 &lt; 42 &lt;= 0/0)
+# False (doesn't raise ZeroDivisionError because of Boolean short circuiting)
+</code></pre>
+<p>The comparison operators in Python are:</p>
+<ul>
+<li><code>&lt;</code> and <code>&gt;</code></li>
+<li><code>==</code> and<code>!=</code></li>
+<li><code>&lt;=</code> and <code>&gt;=</code></li>
+<li><code>is</code> and <code>is not</code></li>
+<li><code>in</code> and <code>not in</code></li>
+</ul>
+<p>You can write <code>3 in (1, 2, 3) &lt; (1, 2, 4) &gt; (1, 2) not in [] != 1 is 1</code>, which is truthy. For extra fun, it will raise a <code>SyntaxWarning</code>.</p>
+<h2 id="golfers-corner"><a class="header" href="#golfers-corner">Golfer's corner</a></h2>
+<p><code>and</code> is most useful for giving up. If your data processing only makes sense on truthy values, <code>and</code> will let you pass falsy ones through unprocessed. Though, as you've seen, <code>and</code> is not as short as <code>&amp;</code> for comparing real Booleans, no matter how painful to admit.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="credits"><a class="header" href="#credits">Credits</a></h1>
 <p>Most of this: <a href="https://github.com/IFcoltransG">IFcoltransG</a>.</p>
 <p>Inspiration: <code>#esoteric-python</code> in the <a href="https://discord.gg/python">Python Discord</a>, plus <a href="https://codegolf.stackexchange.com/q/54">Tips for golfing in Python</a>, and <a href="learnyouahaskell.com">Learn You a Haskell</a>.</p>

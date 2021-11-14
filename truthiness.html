@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="home.html">Home</a></li><li class="chapter-item expanded "><a href="whitespace.html"><strong aria-hidden="true">1.</strong> Whitespace</a></li><li class="chapter-item expanded "><a href="truthiness.html" class="active"><strong aria-hidden="true">2.</strong> Truthiness and Falsiness</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Short Circuits (Under Construction)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Lambdas (Under Construction)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Operators and Builtins (Under Construction)</div></li><li class="chapter-item expanded affix "><a href="credits.html">Credits</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="home.html">Home</a></li><li class="chapter-item expanded "><a href="whitespace.html"><strong aria-hidden="true">1.</strong> Whitespace</a></li><li class="chapter-item expanded "><a href="truthiness.html" class="active"><strong aria-hidden="true">2.</strong> Truthiness and Falsiness</a></li><li class="chapter-item expanded "><a href="circuits.html"><strong aria-hidden="true">3.</strong> Short Circuits</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Lambdas (Under Construction)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Operators and Builtins (Under Construction)</div></li><li class="chapter-item expanded affix "><a href="credits.html">Credits</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -224,7 +224,7 @@ And here's <code>not (A or B)</code> is <code>(not A) and (not B)</code>:
 </table>
 </details>
 <h2 id="pragmatism"><a class="header" href="#pragmatism">Pragmatism</a></h2>
-<p>If you need to select an expression based on a Boolean, indexing <code>(a,b)[boolean]</code> is often shorter than an explicit ternary conditional <code>b if boolean else a</code>. The problem with the former is that it will always evaluate both <code>a</code> and <code>b</code>. For example, <code>(print(&quot;a&quot;),print(&quot;b&quot;))[boolean]</code> will always print both <code>a</code> and <code>b</code>, so should be converted to <code>print((&quot;a&quot;,&quot;b&quot;)[boolean])</code>  or <code>print(&quot;ab&quot;[boolean])</code> to print only one of the two. (Many other situations can be shortened using short-circuiting.)</p>
+<p>If you need to select an expression based on a Boolean, indexing <code>(a,b)[boolean]</code> is often shorter than an explicit <a href="./circuits.html#ternary-conditionals">ternary conditional</a> <code>b if boolean else a</code>. The problem with the former is that it will always evaluate both <code>a</code> and <code>b</code>. For example, <code>(print(&quot;a&quot;),print(&quot;b&quot;))[boolean]</code> will always print both <code>a</code> and <code>b</code>, so should be converted to <code>print((&quot;a&quot;,&quot;b&quot;)[boolean])</code>  or <code>print(&quot;ab&quot;[boolean])</code> to print only one of the two. (Many other situations can be shortened using short-circuiting.)</p>
 <p>If you need to convert a Boolean to lowercase text <code>&quot;true&quot;</code>/<code>&quot;false&quot;</code>, you can interleave the two strings and use a slice, saving on quote marks. <code>&quot;ftarlusee&quot;[boolean::2]</code> takes every second character, starting at either <code>0</code> or <code>1</code> depending, so will suffice. The trick works for any pair of strings that are the same length, or if there's one extra character for the <code>False</code> option.</p>
 
                     </main>
@@ -234,7 +234,7 @@ And here's <code>not (A or B)</code> is <code>(not A) and (not B)</code>:
                             <a rel="prev" href="whitespace.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="credits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="circuits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -246,7 +246,7 @@ And here's <code>not (A or B)</code> is <code>(not A) and (not B)</code>:
                     <a rel="prev" href="whitespace.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="credits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="circuits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
