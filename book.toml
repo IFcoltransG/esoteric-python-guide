@@ -7,4 +7,4 @@ title = "Esoteric Python Guide"
 
 [output.html]
 git-repository-url = "https://github.com/IFcoltransG/esoteric-python-guide/"
-edit-url-template = "https://github.com/IFcoltransG/esoteric-python-guide/edit/master/{path}"
+edit-url-template = "https://github.com/IFcoltransG/esoteric-python-guide/edit/main/{path}"
