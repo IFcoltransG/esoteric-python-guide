@@ -243,7 +243,7 @@ print(1000 &lt; 42 &lt;= 0/0)
 <ul>
 <li>
 <p>Every general rule has an exception, and exponentiation <code>**</code> is the exception to that one. It binds tighter than <code>-foo</code>, <code>~foo</code> and <code>+foo</code>, even though they're single-value operators and <code>a ** b</code> takes two values.</p>
-<p>It's also an exception to another rule: it's 'right-associative' rather than left-associative. That's another way of saying that Python treats <code>a ** b ** c ** d</code> as <code>a ** (b ** (c**d))</code>, which is the opposite order to every other two-valued operator. For instance, <code>a * b * c * d</code> turns into <code>((a*b) * c) * d</code>.</p>
+<p>It's also an exception to another rule: it's 'right-associative' rather than left-associative. That's another way of saying that Python treats <code>a ** b ** c ** d</code> as <code>a ** (b ** (c**d))</code>, which is the opposite order to every other two-valued operator. For instance, <code>a * b * c * d</code> turns into <code>((a*b) * c) * d</code>. Exponentiation probably gets its right-associativity from mathematical notation, where a power law, (a<sup>b</sup>)<sup>c</sup> = a<sup>b×c</sup>, makes left-associative exponents pointless.</p>
 </li>
 <li>
 <p>Of course next are <code>-foo</code>, <code>~foo</code>, <code>+foo</code>. (These are not their two-value forms: <code>+foo</code> is a different operator to <code>foo + bar</code>.) If you've ever typed <code>-1**2</code> into Google and got confused why it's <code>-1</code> rather than <code>(-1)**2</code> = <code>1</code>, this is why.</p>
