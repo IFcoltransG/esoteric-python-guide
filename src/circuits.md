@@ -141,7 +141,14 @@ If you'd like to follow along, there's a concise reference version in [the Pytho
 - The penultimate on the list is `lambda ...: foo`, which is designed so that almost any expression can go on its right-hand-side.
 - The only expression you can't put on the right of a lambda is anything using walrus assignment, `:=`, because Python thought that would be useless.
 
-Phew! That's all of them. Every so often you can use these precedence rules to shave off a few brackets. It helps to keep them with you always. Post-it them to the back of your laptop. Tattoo them on your wrist. Whisper them as you fall asleep.
+Phew! That's all of them.
+```py
+# Where might the brackets for this go then?
+(f := lambda: 0 if 4 & -foo.bar()[1 ** 2 ** 3] + 1 % 2 >> 3 and 3 != 3 ^ 2 or False else baz)
+```
+<details> <summary> <i> Expand for an answer. </i> </summary> It should be something like <code>f := (lambda: (0 if ((4 & (((-(((foo.bar)())[1 ** (2 ** 3)])) + (1 % 2)) >> 3) and (3 != (3 ^ 2))) or False) else baz))</code> </details>
+
+Every so often you can use these precedence rules to shave off a few brackets. It helps to keep them with you always. Post-it them to the back of your laptop. Tattoo them on your wrist. Whisper them as you fall asleep.
 
 ## Golfer's corner
 Aren't Boolean operators nice? So much statelier than the bitwise operators, you may well find.
