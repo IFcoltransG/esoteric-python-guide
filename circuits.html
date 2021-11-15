@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js rust">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -30,7 +30,7 @@
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "rust";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -56,7 +56,7 @@
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
             html.classList.remove('no-js')
-            html.classList.remove('light')
+            html.classList.remove('rust')
             html.classList.add(theme);
             html.classList.add('js');
         </script>
@@ -93,8 +93,8 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
@@ -222,8 +222,76 @@ print(1000 &lt; 42 &lt;= 0/0)
 <li><code>in</code> and <code>not in</code></li>
 </ul>
 <p>You can write <code>3 in (1, 2, 3) &lt; (1, 2, 4) &gt; (1, 2) not in [] != 1 is 1</code>, which is truthy. For extra fun, it will raise a <code>SyntaxWarning</code>.</p>
+<h2 id="precedence"><a class="header" href="#precedence">Precedence</a></h2>
+<p>Python isn't a Lisp, so there's no reason to use extra brackets. If you keep in mind operator precedence, you can avoid adding redundant ones.</p>
+<p>It can be easier to commit lists to memory with an explanation why they are in the order they are. You have probably seen that Python uses BEDMAS/PEMDAS/BODMAS/BIDMAS ordering, which means <code>a + (b * c)</code> is just <code>a + b * c</code>—Python always does the <code>*</code> before the <code>+</code>. None of these mnemonics have a letter for &quot;Boolean AND&quot; or &quot;unary inverse&quot; or &quot;modulo&quot;, so it's just a skeleton of Python's operators.</p>
+<p>If you'd like to follow along, there's a concise reference version in <a href="https://docs.python.org/3/reference/expressions.html#operator-precedence">the Python docs</a>.</p>
+<h3 id="bp"><a class="header" href="#bp">B/P</a></h3>
+<ul>
+<li>
+<p>First in the acronym is 'B' for 'brackets', because <code>(...)</code> is always the tightest grouping. Never can anything inside <code>(...)</code> pair itself with anything outside the brackets. This also goes for square brackets <code>[...]</code> and squiggly brackets <code>{...}</code>.</p>
+</li>
+<li>
+<p>After that, there's another use of brackets, which is calling functions <code>foo(...)</code> and indexing lists <code>foo[...]</code>. Attribute access is also at this level of precedence <code>foo.bar</code>.</p>
+</li>
+<li>
+<p>Next is the <code>await</code> keyword. It's looser than the above, so <code>await lib.load(&quot;utf-8&quot;)</code> is <code>await ( ( lib.load )(&quot;utf-8&quot;) )</code>.</p>
+<p>The operators so far have all operated on one value. In <code>foo()</code>, the <code>()</code> operates on just <code>foo</code>, whereas <code>foo + bar</code>, which comes later in the precedence chart, has <code>+</code> combining both <code>foo</code> and <code>bar</code> together. As a general rule, the single-value operations (like <code>await</code>) bind tighter than the two-value operators.</p>
+</li>
+</ul>
+<h3 id="eo"><a class="header" href="#eo">E/O</a></h3>
+<ul>
+<li>
+<p>Every general rule has an exception, and exponentiation <code>**</code> is the exception to that one. It binds tighter than <code>-foo</code>, <code>~foo</code> and <code>+foo</code>, even though they're single-value operators and <code>a ** b</code> takes two values.</p>
+<p>It's also an exception to another rule: it's 'right-associative' rather than left-associative. That's another way of saying that Python treats <code>a ** b ** c ** d</code> as <code>a ** (b ** (c**d))</code>, which is the opposite order to every other two-valued operator. For instance, <code>a * b * c * d</code> turns into <code>((a*b) * c) * d</code>.</p>
+</li>
+<li>
+<p>Of course next are <code>-foo</code>, <code>~foo</code>, <code>+foo</code>. (These are not their two-value forms: <code>+foo</code> is a different operator to <code>foo + bar</code>.) If you've ever typed <code>-1**2</code> into Google and got confused why it's <code>-1</code> rather than <code>(-1)**2</code> = <code>1</code>, this is why.</p>
+</li>
+</ul>
+<h3 id="dm"><a class="header" href="#dm">D/M</a></h3>
+<ul>
+<li>We're up to the 'D' and 'M' for division and multiplication. Python treats <code>*</code>, <code>@</code>, <code>/</code>, <code>//</code> and <code>%</code> as forms of multiplication and division, so they all have the same precedence.</li>
+</ul>
+<h3 id="as"><a class="header" href="#as">A/S</a></h3>
+<ul>
+<li>'A' and 'S'—adding and subtracting—are uncomplicated. <code>foo + bar</code> and <code>foo - bar</code> are the loosest operators yet.</li>
+</ul>
+<h3 id="bitwise"><a class="header" href="#bitwise">Bitwise</a></h3>
+<ul>
+<li>
+<p>The mnemonics end here, and this is the point where primary school students would stop learning and go outside. They didn't have to learn about bitwise operations, starting with left-shift <code>&lt;&lt;</code> and right-shift <code>&gt;&gt;</code>. The shifts are at this precedence because they're often used to prepare values for the other bitwise operators.</p>
+</li>
+<li>
+<p>After that are <code>&amp;</code>, <code>^</code> and <code>|</code>, in that order. The reason <code>&amp;</code> (<em>bitwise AND</em>) and <code>|</code> (<em>bitwise OR</em>) go in this order, is that mathematicians think of <code>&amp;</code> and <code>|</code> as a lot like <code>*</code> and <code>+</code>, respectively—that's why <code>a * b</code> gives you the same Boolean as <code>a &amp; b</code> if (<code>a</code> and <code>b</code> are Booleans) and <code>bool(a + b)</code> gives you the same as <code>a | b</code>.</p>
+<p>So to keep the mathematicians happy, <code>a | b &amp; c</code> has analogous operator precedence to <code>a + b * c</code>: it's <code>a | (b &amp; c)</code>. (For some reason <em>bitwise XOR</em> <code>^</code> is put between these operators' precedence.)</p>
+</li>
+</ul>
+<h3 id="boolean"><a class="header" href="#boolean">Boolean</a></h3>
+<ul>
+<li>
+<p>You've already had a look at the comparison operators. They all go here. That's why <code>a + b &gt;= c</code> doesn't accidentally parse as <code>a + (b &gt;= c)</code> which would be less intuitive than <code>(a + b) &gt;= c</code>. Python combines all of the numerical and string operations at a tighter precedence than Booleans, because lots of Boolean expressions have numerical operations like addition inside them.</p>
+</li>
+<li>
+<p>Intuition says that <code>a &gt;= b or b &gt;= c</code> should parse as <code>(a &gt;= b) or (a &gt;= c)</code>, so the Boolean operators go next. The first Boolean operator is the one-valued Boolean operator, <code>not a</code>, because operations on a single value come before operations on two values. Then the two-valued operators, <code>a and b</code> and <code>a or b</code>. Just like <code>&amp;</code> and <code>|</code>, <code>and</code> binds more tightly than <code>or</code> does.</p>
+</li>
+<li>
+<p>What does Python expect you to do with Booleans?</p>
+<p>—Use them in an <code>if</code>/<code>else</code>!</p>
+<p>So <code>a if b else c</code> has to be looser than everything else so far.</p>
+<p>Did you know that 'ternary' in &quot;ternary conditional&quot; means &quot;three-valued,&quot; because it takes an <code>a</code>, a <code>b</code> and a <code>c</code>? Given the pattern of single-valued operators before double-, it fits that a three-valued operator should go after all the other Boolean operations.</p>
+</li>
+</ul>
+<h3 id="beyond"><a class="header" href="#beyond">Beyond</a></h3>
+<ul>
+<li>The penultimate on the list is <code>lambda ...: foo</code>, which is designed so that almost any expression can go on its right-hand-side.</li>
+<li>The only expression you can't put on the right of a lambda is anything using walrus assignment, <code>:=</code>, because Python thought that would be useless.</li>
+</ul>
+<p>Phew! That's all of them. Every so often you can use these precedence rules to shave off a few brackets. It helps to keep them with you always. Post-it them to the back of your laptop. Tattoo them on your wrist. Whisper them as you fall asleep.</p>
 <h2 id="golfers-corner"><a class="header" href="#golfers-corner">Golfer's corner</a></h2>
-<p><code>and</code> is most useful for giving up. If your data processing only makes sense on truthy values, <code>and</code> will let you pass falsy ones through unprocessed. Though, as you've seen, <code>and</code> is not as short as <code>&amp;</code> for comparing real Booleans, no matter how painful to admit.</p>
+<p>Aren't Boolean operators nice? So much statelier than the bitwise operators, you may well find.</p>
+<p>They are lazy though, it must be said. <code>and</code> is most useful for giving up. If your data processing only makes sense on truthy values, <code>and</code> will let you pass falsy ones through unprocessed. Though, as you've seen, <code>and</code> is not as short as <code>&amp;</code> for comparing real Booleans, no matter how painful to admit.</p>
+<p><code>and</code> might be better than <code>&amp;</code> if you need the implicit Boolean conversions, when you want to return an arbitrary object, for its short-circuiting behaviour, or if it has a helpful precedence that lets you trim brackets.</p>
 
                     </main>
 
