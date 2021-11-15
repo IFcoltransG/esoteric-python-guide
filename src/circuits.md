@@ -100,5 +100,52 @@ The comparison operators in Python are:
 
 You can write `3 in (1, 2, 3) < (1, 2, 4) > (1, 2) not in [] != 1 is 1`, which is truthy. For extra fun, it will raise a `SyntaxWarning`.
 
+## Precedence
+Python isn't a Lisp, so there's no reason to use extra brackets. If you keep in mind operator precedence, you can avoid adding redundant ones.
+
+It can be easier to commit lists to memory with an explanation why they are in the order they are. You have probably seen that Python uses BEDMAS/PEMDAS/BODMAS/BIDMAS ordering, which means `a + (b * c)` is just `a + b * c`—Python always does the `*` before the `+`. None of these mnemonics have a letter for "Boolean AND" or "unary inverse" or "modulo", so it's just a skeleton of Python's operators.
+
+If you'd like to follow along, there's a concise reference version in [the Python docs](https://docs.python.org/3/reference/expressions.html#operator-precedence).
+
+### B/P
+- First in the acronym is 'B' for 'brackets', because `(...)` is always the tightest grouping. Never can anything inside `(...)` pair itself with anything outside the brackets. This also goes for square brackets `[...]` and squiggly brackets `{...}`.
+- After that, there's another use of brackets, which is calling functions `foo(...)` and indexing lists `foo[...]`. Attribute access is also at this level of precedence `foo.bar`.
+- Next is the `await` keyword. It's looser than the above, so `await lib.load("utf-8")` is `await ( ( lib.load )("utf-8") )`.
+
+  The operators so far have all operated on one value. In `foo()`, the `()` operates on just `foo`, whereas `foo + bar`, which comes later in the precedence chart, has `+` combining both `foo` and `bar` together. As a general rule, the single-value operations (like `await`) bind tighter than the two-value operators.
+### E/O
+- Every general rule has an exception, and exponentiation `**` is the exception to that one. It binds tighter than `-foo`, `~foo` and `+foo`, even though they're single-value operators and `a ** b` takes two values.
+
+  It's also an exception to another rule: it's 'right-associative' rather than left-associative. That's another way of saying that Python treats `a ** b ** c ** d` as `a ** (b ** (c**d))`, which is the opposite order to every other two-valued operator. For instance, `a * b * c * d` turns into `((a*b) * c) * d`.
+- Of course next are `-foo`, `~foo`, `+foo`. (These are not their two-value forms: `+foo` is a different operator to `foo + bar`.) If you've ever typed `-1**2` into Google and got confused why it's `-1` rather than `(-1)**2` = `1`, this is why.
+### D/M
+- We're up to the 'D' and 'M' for division and multiplication. Python treats `*`, `@`, `/`, `//` and `%` as forms of multiplication and division, so they all have the same precedence.
+### A/S
+- 'A' and 'S'—adding and subtracting—are uncomplicated. `foo + bar` and `foo - bar` are the loosest operators yet.
+### Bitwise
+- The mnemonics end here, and this is the point where primary school students would stop learning and go outside. They didn't have to learn about bitwise operations, starting with left-shift `<<` and right-shift `>>`. The shifts are at this precedence because they're often used to prepare values for the other bitwise operators.
+- After that are `&`, `^` and `|`, in that order. The reason `&` (*bitwise AND*) and `|` (*bitwise OR*) go in this order, is that mathematicians think of `&` and `|` as a lot like `*` and `+`, respectively—that's why `a * b` gives you the same Boolean as `a & b` if (`a` and `b` are Booleans) and `bool(a + b)` gives you the same as `a | b`.
+
+  So to keep the mathematicians happy, `a | b & c` has analogous operator precedence to `a + b * c`: it's `a | (b & c)`. (For some reason *bitwise XOR* `^` is put between these operators' precedence.)
+### Boolean
+- You've already had a look at the comparison operators. They all go here. That's why `a + b >= c` doesn't accidentally parse as `a + (b >= c)` which would be less intuitive than `(a + b) >= c`. Python combines all of the numerical and string operations at a tighter precedence than Booleans, because lots of Boolean expressions have numerical operations like addition inside them.
+- Intuition says that `a >= b or b >= c` should parse as `(a >= b) or (a >= c)`, so the Boolean operators go next. The first Boolean operator is the one-valued Boolean operator, `not a`, because operations on a single value come before operations on two values. Then the two-valued operators, `a and b` and `a or b`. Just like `&` and `|`, `and` binds more tightly than `or` does.
+- What does Python expect you to do with Booleans?
+
+  —Use them in an `if`/`else`!
+
+  So `a if b else c` has to be looser than everything else so far.
+
+  Did you know that 'ternary' in "ternary conditional" means "three-valued," because it takes an `a`, a `b` and a `c`? Given the pattern of single-valued operators before double-, it fits that a three-valued operator should go after all the other Boolean operations.
+### Beyond
+- The penultimate on the list is `lambda ...: foo`, which is designed so that almost any expression can go on its right-hand-side.
+- The only expression you can't put on the right of a lambda is anything using walrus assignment, `:=`, because Python thought that would be useless.
+
+Phew! That's all of them. Every so often you can use these precedence rules to shave off a few brackets. It helps to keep them with you always. Post-it them to the back of your laptop. Tattoo them on your wrist. Whisper them as you fall asleep.
+
 ## Golfer's corner
-`and` is most useful for giving up. If your data processing only makes sense on truthy values, `and` will let you pass falsy ones through unprocessed. Though, as you've seen, `and` is not as short as `&` for comparing real Booleans, no matter how painful to admit.
+Aren't Boolean operators nice? So much statelier than the bitwise operators, you may well find.
+
+They are lazy though, it must be said. `and` is most useful for giving up. If your data processing only makes sense on truthy values, `and` will let you pass falsy ones through unprocessed. Though, as you've seen, `and` is not as short as `&` for comparing real Booleans, no matter how painful to admit.
+
+`and` might be better than `&` if you need the implicit Boolean conversions, when you want to return an arbitrary object, for its short-circuiting behaviour, or if it has a helpful precedence that lets you trim brackets.
