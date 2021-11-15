@@ -287,7 +287,12 @@ print(1000 &lt; 42 &lt;= 0/0)
 <li>The penultimate on the list is <code>lambda ...: foo</code>, which is designed so that almost any expression can go on its right-hand-side.</li>
 <li>The only expression you can't put on the right of a lambda is anything using walrus assignment, <code>:=</code>, because Python thought that would be useless.</li>
 </ul>
-<p>Phew! That's all of them. Every so often you can use these precedence rules to shave off a few brackets. It helps to keep them with you always. Post-it them to the back of your laptop. Tattoo them on your wrist. Whisper them as you fall asleep.</p>
+<p>Phew! That's all of them.</p>
+<pre><code class="language-py"># Where might the brackets for this go then?
+(f := lambda: 0 if 4 &amp; -foo.bar()[1 ** 2 ** 3] + 1 % 2 &gt;&gt; 3 and 3 != 3 ^ 2 or False else baz)
+</code></pre>
+<details> <summary> <i> Expand for an answer. </i> </summary> It should be something like <code>f := (lambda: (0 if ((4 & (((-(((foo.bar)())[1 ** (2 ** 3)])) + (1 % 2)) >> 3) and (3 != (3 ^ 2))) or False) else baz))</code> </details>
+<p>Every so often you can use these precedence rules to shave off a few brackets. It helps to keep them with you always. Post-it them to the back of your laptop. Tattoo them on your wrist. Whisper them as you fall asleep.</p>
 <h2 id="golfers-corner"><a class="header" href="#golfers-corner">Golfer's corner</a></h2>
 <p>Aren't Boolean operators nice? So much statelier than the bitwise operators, you may well find.</p>
 <p>They are lazy though, it must be said. <code>and</code> is most useful for giving up. If your data processing only makes sense on truthy values, <code>and</code> will let you pass falsy ones through unprocessed. Though, as you've seen, <code>and</code> is not as short as <code>&amp;</code> for comparing real Booleans, no matter how painful to admit.</p>
