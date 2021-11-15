@@ -116,7 +116,7 @@ If you'd like to follow along, there's a concise reference version in [the Pytho
 ### E/O
 - Every general rule has an exception, and exponentiation `**` is the exception to that one. It binds tighter than `-foo`, `~foo` and `+foo`, even though they're single-value operators and `a ** b` takes two values.
 
-  It's also an exception to another rule: it's 'right-associative' rather than left-associative. That's another way of saying that Python treats `a ** b ** c ** d` as `a ** (b ** (c**d))`, which is the opposite order to every other two-valued operator. For instance, `a * b * c * d` turns into `((a*b) * c) * d`.
+  It's also an exception to another rule: it's 'right-associative' rather than left-associative. That's another way of saying that Python treats `a ** b ** c ** d` as `a ** (b ** (c**d))`, which is the opposite order to every other two-valued operator. For instance, `a * b * c * d` turns into `((a*b) * c) * d`. Exponentiation probably gets its right-associativity from mathematical notation, where a power law, (a<sup>b</sup>)<sup>c</sup> = a<sup>b×c</sup>, makes left-associative exponents pointless.
 - Of course next are `-foo`, `~foo`, `+foo`. (These are not their two-value forms: `+foo` is a different operator to `foo + bar`.) If you've ever typed `-1**2` into Google and got confused why it's `-1` rather than `(-1)**2` = `1`, this is why.
 ### D/M
 - We're up to the 'D' and 'M' for division and multiplication. Python treats `*`, `@`, `/`, `//` and `%` as forms of multiplication and division, so they all have the same precedence.
