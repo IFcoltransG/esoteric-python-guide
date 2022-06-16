@@ -43,7 +43,7 @@ Look at an expression like `True or foo()`. `foo` might return `True` or `False`
 
 (If you like, you can confirm this with the [truth table](./truthiness.md#booleans).)
 
-In fact, `a or b` is like a shorter version of `a if a else b`, and `a and b` is like `a if not a else b`. (A slight difference: `foo() or b` calls `foo` once, while `foo() if foo() else b` calls it only once.) After staring at that notation, you might be wondering what happens with values that aren't `True` or `False`.
+In fact, `a or b` is like a shorter version of `a if a else b`, and `a and b` is like `a if not a else b`. (A slight difference: `foo() or b` calls `foo` once, while `foo() if foo() else b` might double up on calls.) After staring at that notation, you might be wondering what happens with values that aren't `True` or `False`.
 
 ```py
 1 or 0/0
